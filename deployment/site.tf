@@ -105,7 +105,7 @@ module "prometheus" {
     1789721 # notify
   ]
 
-  influxdb_service_plan = "tiny-1_x"
+  influxdb_service_plan = "small-1_x"
 
   paas_exporter_username = data.pass_password.prometheus_exporter_username.password
   paas_exporter_password = data.pass_password.prometheus_exporter_password.password
