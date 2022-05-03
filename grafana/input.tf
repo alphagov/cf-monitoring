@@ -16,13 +16,13 @@ variable "extra_datasources" { default = [] }
 variable "postgres_plan" { default = "" }
 variable "basic_auth_password" { default = "" }
 variable "basic_auth_username" { default = "notify" }
-variable "aws_datasources" { 
+variable "aws_datasources" {
   type = list(object({
-    "name"                   = string
-    "region"                 = string
-    "access_key"             = string
-    "secret_key"             = string
-    "customMetricNamespaces" = string
+    name                    = string
+    region                  = string
+    access_key              = string
+    secret_key              = string
+    customMetricsNamespaces = string
   }))
   sensitive = true
 }
