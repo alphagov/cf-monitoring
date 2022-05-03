@@ -39,10 +39,10 @@ data "archive_file" "config" {
   }
 
   dynamic "source" {
-    for_each = var.aws_datasources
+    for_each = { for index, obj in var.aws_datasources : trimspace(obj.name) => obj }
     content {
-      content  = templatefile("${path.module}/datasources/aws_cloudwatch.yml.tmpl", source.value)
-      filename = "datasources/aws_cloudwatch_${source.key}.yml"
+      content  = templatefile("${path.module}/datasources/aws_cloudwatch.yml.tmpl", each.value)
+      filename = "datasources/aws_cloudwatch_${each.key}.yml"
     }
   }
 
