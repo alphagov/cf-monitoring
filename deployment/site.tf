@@ -105,6 +105,8 @@ module "prometheus" {
     1789721 # notify
   ]
 
+  grafana_aws_datasources = []
+
   influxdb_service_plan = "small-1_x"
 
   paas_exporter_username = data.pass_password.prometheus_exporter_username.password

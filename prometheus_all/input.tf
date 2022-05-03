@@ -55,6 +55,18 @@ variable "grafana_github_team_ids" {
   description = "Github team ids that are authorised to access grafana"
   default     = []
 }
+variable "grafana_aws_datasources" {
+  description = "AWS Accounts and credentials to configure as CloudWatch datasources"
+  sensitive   = true
+  type        = list(object({
+    "name"                   = string
+    "region"                 = string
+    "access_key"             = string
+    "secret_key"             = string
+    "customMetricNamespaces" = string
+  }))
+  default      = []
+}
 variable "grafana_json_dashboards" {
   description = <<-DESCRIPTION
   Additional Grafana dashboards. Passed as a list of long json strings.
