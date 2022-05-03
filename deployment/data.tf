@@ -21,3 +21,19 @@ data "pass_password" "prometheus_exporter_username" {
 data "pass_password" "prometheus_exporter_password" {
   path = "credentials/monitoring/prometheus-exporter-paas-password"
 }
+
+data "pass_password" "grafana_emergency_alerts_staging_aws_access_key_id" {
+  path = "credentials/monitoring/grafana-emergency-alerts-staging-aws-access-key-id"
+}
+
+data "pass_password" "grafana_emergency_alerts_staging_aws_secret_access_key" {
+  path = "credentials/monitoring/grafana-emergency-alerts-staging-aws-secret-access-key"
+}
+
+data "pass_password" "grafana_emergency_alerts_prod_aws_access_key_id" {
+  path = "credentials/monitoring/grafana-emergency-alerts-prod-aws-access-key-id"
+}
+
+data "pass_password" "grafana_emergency_alerts_prod_aws_secret_access_key" {
+  path = "credentials/monitoring/grafana-emergency-alerts-prod-aws-secret-access-key"
+}
