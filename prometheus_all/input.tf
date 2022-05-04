@@ -148,12 +148,6 @@ variable "prometheus_shared_token" { default = "" }
 locals {
   list_of_redis_exporters    = [for redis_module in module.redis_prometheus_exporter : redis_module.exporter]
   list_of_postgres_exporters = [for postgres_module in module.postgres_prometheus_exporter : postgres_module.exporter]
-  list_of_external_exporters = [for endpoint in var.external_exporters :
-    {
-      endpoint = endpoint
-      name     = endpoint
-      scheme   = "https"
-    }
-  ]
+  list_of_external_exporters = var.external_exporters
   prometheus_yearly_endpoint = var.enable_prometheus_yearly ? module.prometheus_yearly[0].endpoint : ""
 }

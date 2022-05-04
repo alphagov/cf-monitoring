@@ -22,4 +22,12 @@ locals {
       app_name = pair[1]
     }
   }
+
+  external_apps = [{
+    name            = "PaaS Redis"
+    endpoint        = "redis.metrics.cloud.service.gov.uk/metrics"
+    scrape_interval = "300s"
+    auth_username   = data.pass_password.prometheus_exporter_username.password
+    auth_password   = data.pass_password.prometheus_exporter_password.password
+  }]
 }

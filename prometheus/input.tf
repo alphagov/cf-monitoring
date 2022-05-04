@@ -52,6 +52,8 @@ locals {
       scheme          = contains(keys(exporter), "scheme") ? exporter.scheme : "https"
       honor_labels    = contains(keys(exporter), "honor_labels") ? exporter.honor_labels : false
       scrape_interval = contains(keys(exporter), "scrape_interval") ? exporter.scrape_interval : local.default_scrape_interval
+      auth_username   = contains(keys(exporter), "auth_username") ? exporter.auth_username : ""
+      auth_password   = contains(keys(exporter), "auth_password") ? exporter.auth_password : ""
     }
   ]
   default_internal_app_port = "8080"
