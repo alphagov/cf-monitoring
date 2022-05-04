@@ -24,7 +24,6 @@ variable "aws_datasources" {
     secret_key              = string
     customMetricsNamespaces = string
   }))
-  sensitive = true
 }
 
 locals {

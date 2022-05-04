@@ -57,7 +57,6 @@ variable "grafana_github_team_ids" {
 }
 variable "grafana_aws_datasources" {
   description = "AWS Accounts and credentials to configure as CloudWatch datasources"
-  sensitive   = true
   type = list(object({
     name                    = string
     region                  = string
