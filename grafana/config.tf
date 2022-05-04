@@ -39,6 +39,14 @@ data "archive_file" "config" {
   }
 
   dynamic "source" {
+    for_each = { for index, obj in var.aws_datasources : trimspace(obj.name) => obj }
+    content {
+      content  = templatefile("${path.module}/datasources/aws_cloudwatch.yml.tmpl", source.value)
+      filename = "datasources/aws_cloudwatch_${source.key}.yml"
+    }
+  }
+
+  dynamic "source" {
     for_each = local.dashboards
     content {
       content  = source.value

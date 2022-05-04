@@ -1,90 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket  = "notify.tools-terraform-state"
-    key     = "cf-prometheus-monitoring/terraform.tfstate"
-    region  = "eu-west-1"
-    encrypt = true
-  }
-
-  required_providers {
-    pass = {
-      source = "mecodia/pass"
-    }
-
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.6.0"
-    }
-
-    cloudfoundry = {
-      source  = "cloudfoundry-community/cloudfoundry"
-      version = ">= 0.12.6"
-    }
-  }
-}
-
-provider "aws" {
-  region = "eu-west-1"
-}
-
-provider "cloudfoundry" {
-  api_url             = "https://api.cloud.service.gov.uk"
-  sso_passcode        = var.cloudfoundry_sso_passcode
-  skip_ssl_validation = false
-  app_logs_max        = 30
-  store_tokens_path   = "./config.json"
-}
-
-data "pass_password" "basic_auth_password" {
-  path = "credentials/http_auth/notify/password"
-}
-
-data "pass_password" "grafana_github_client_id" {
-  path = "credentials/monitoring/grafana-github-oauth-client-id"
-}
-
-data "pass_password" "grafana_github_client_secret" {
-  path = "credentials/monitoring/grafana-github-oauth-client-secret"
-}
-
-data "pass_password" "prometheus_shared_token" {
-  path = "credentials/monitoring/prometheus-shared-token"
-}
-
-data "pass_password" "prometheus_exporter_username" {
-  path = "credentials/monitoring/prometheus-exporter-paas-username"
-}
-
-data "pass_password" "prometheus_exporter_password" {
-  path = "credentials/monitoring/prometheus-exporter-paas-password"
-}
-
-variable "cloudfoundry_sso_passcode" {}
-
-locals {
-  org_name = "govuk-notify"
-  spaces = [
-    "preview",
-    "staging",
-    "production",
-  ]
-  internal_apps_per_space = [
-    "notify-statsd-exporter",
-    "notify-api",
-    "notify-admin",
-  ]
-  cross_space_apps = [
-    "notify-prometheus-exporter.apps.internal"
-  ]
-
-  internal_apps = {
-    for pair in setproduct(local.spaces, local.internal_apps_per_space) : "${pair[1]}-${pair[0]}.apps.internal" => {
-      space    = pair[0]
-      app_name = pair[1]
-    }
-  }
-}
-
 module "prometheus" {
   source = "../prometheus_all"
   enabled_modules = [
@@ -103,6 +16,23 @@ module "prometheus" {
   grafana_github_client_secret = data.pass_password.grafana_github_client_secret.password
   grafana_github_team_ids = [
     1789721 # notify
+  ]
+
+  grafana_aws_datasources = [
+    {
+      name                    = "Cell broadcasts staging",
+      region                  = "eu-west-2",
+      access_key              = data.pass_password.grafana_emergency_alerts_staging_aws_access_key_id.password,
+      secret_key              = data.pass_password.grafana_emergency_alerts_staging_aws_secret_access_key.password,
+      customMetricsNamespaces = "CBCProxy,Strongswan",
+    },
+    {
+      name                    = "Cell broadcasts prod",
+      region                  = "eu-west-2",
+      access_key              = data.pass_password.grafana_emergency_alerts_prod_aws_access_key_id.password,
+      secret_key              = data.pass_password.grafana_emergency_alerts_prod_aws_secret_access_key.password,
+      customMetricsNamespaces = "CBCProxy,Strongswan",
+    }
   ]
 
   influxdb_service_plan = "small-1_x"
