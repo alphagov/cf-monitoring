@@ -20,18 +20,18 @@ module "prometheus" {
 
   grafana_aws_datasources = [
     {
-      "name"                    = "Cell broadcasts staging",
-      "region"                  = "eu-west-2",
-      "access_key"              = data.pass_password.grafana_emergency_alerts_staging_aws_access_key_id.password,
-      "secret_key"              = data.pass_password.grafana_emergency_alerts_staging_aws_secret_access_key.password,
-      "customMetricsNamespaces" = "CBCProxy,Strongswan",
+      name                    = "Cell broadcasts staging",
+      region                  = "eu-west-2",
+      access_key              = data.pass_password.grafana_emergency_alerts_staging_aws_access_key_id.password,
+      secret_key              = data.pass_password.grafana_emergency_alerts_staging_aws_secret_access_key.password,
+      customMetricsNamespaces = "CBCProxy,Strongswan",
     },
     {
-      "name"                    = "Cell broadcasts prod",
-      "region"                  = "eu-west-2",
-      "access_key"              = data.pass_password.grafana_emergency_alerts_prod_aws_access_key_id.password,
-      "secret_key"              = data.pass_password.grafana_emergency_alerts_prod_aws_secret_access_key.password,
-      "customMetricsNamespaces" = "CBCProxy,Strongswan",
+      name                    = "Cell broadcasts prod",
+      region                  = "eu-west-2",
+      access_key              = data.pass_password.grafana_emergency_alerts_prod_aws_access_key_id.password,
+      secret_key              = data.pass_password.grafana_emergency_alerts_prod_aws_secret_access_key.password,
+      customMetricsNamespaces = "CBCProxy,Strongswan",
     }
   ]
 
