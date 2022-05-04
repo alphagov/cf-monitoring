@@ -54,6 +54,7 @@ locals {
       scrape_interval = contains(keys(exporter), "scrape_interval") ? exporter.scrape_interval : local.default_scrape_interval
       auth_username   = contains(keys(exporter), "auth_username") ? exporter.auth_username : ""
       auth_password   = contains(keys(exporter), "auth_password") ? exporter.auth_password : ""
+      name_prefix     = contains(keys(exporter), "name_prefix") ? exporter.name_prefix : ""
     }
   ]
   default_internal_app_port = "8080"

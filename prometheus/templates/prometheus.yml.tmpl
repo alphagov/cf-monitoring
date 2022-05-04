@@ -29,10 +29,17 @@ scrape_configs:
     basic_auth:
       username: ${exporter.auth_username}
       password: ${exporter.auth_password}
-    ${ endif }
+    %{ endif }
     static_configs:
       - targets: [${exporter.endpoint}]
     metric_relabel_configs:
+    %{ if exporter.name_prefix != "" }
+      - action: replace
+        source_labels: [__name__]
+        target_label: __name__
+        regex: (.*)
+        replacement: ${exporter.name_prefix}_$${1}
+    %{ endif }
       - regex: guid
         action: labeldrop
       - source_labels: [space]
