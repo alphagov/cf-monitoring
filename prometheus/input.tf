@@ -55,10 +55,12 @@ locals {
     }
   ]
   default_internal_app_port = "8080"
-  internal_app_maps = [for app in var.internal_apps :
+  internal_app_maps = [for host, app in var.internal_apps :
     {
-      host = split(":", app)[0]
-      port = try(split(":", app)[1], local.default_internal_app_port)
+      host     = split(":", host)[0]
+      port     = try(split(":", host)[1], local.default_internal_app_port)
+      app_name = app.app_name
+      space    = app.space
     }
   ]
   yearly_param = var.yearly == true ? "&rp=one_year" : ""

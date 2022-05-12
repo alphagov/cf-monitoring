@@ -12,9 +12,12 @@ locals {
     "notify-api",
     "notify-admin",
   ]
-  cross_space_apps = [
-    "notify-prometheus-exporter.apps.internal"
-  ]
+  cross_space_apps = {
+    "notify-prometheus-exporter.apps.internal" = {
+      space    = "monitoring"
+      app_name = "notify-prometheus-exporter"
+    }
+  }
 
   internal_apps = {
     for pair in setproduct(local.spaces, local.internal_apps_per_space) : "${pair[1]}-${pair[0]}.apps.internal" => {
