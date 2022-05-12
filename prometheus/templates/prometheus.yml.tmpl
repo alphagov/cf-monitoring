@@ -48,6 +48,7 @@ scrape_configs:
       - ${app.host}
       type: 'A'
       port: ${app.port}
+
     metric_relabel_configs:
       - source_labels: [app_instance]
         regex: (.+)
@@ -55,6 +56,10 @@ scrape_configs:
         action: replace
       - regex: app_instance
         action: labeldrop
+      - target_label: space
+        replacement: ${app.space}
+      - target_label: app
+        replacement: ${app.app_name}
       - source_labels: [space]
         target_label: space
         regex: live
