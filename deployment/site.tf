@@ -40,7 +40,7 @@ module "prometheus" {
   paas_exporter_username = data.pass_password.prometheus_exporter_username.password
   paas_exporter_password = data.pass_password.prometheus_exporter_password.password
 
-  internal_apps = concat(local.cross_space_apps, keys(local.internal_apps))
+  internal_apps = merge(local.internal_apps, local.cross_space_apps)
 
   prometheus_disk_quota          = 4096
   prometheus_memory              = 4096
