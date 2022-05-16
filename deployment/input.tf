@@ -11,6 +11,7 @@ locals {
     "notify-statsd-exporter",
     "notify-api",
     "notify-admin",
+    "notify-paas-postgres-exporter",
   ]
   cross_space_apps = {
     "notify-prometheus-exporter.apps.internal" = {
