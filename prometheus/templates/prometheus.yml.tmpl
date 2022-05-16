@@ -25,9 +25,21 @@ scrape_configs:
     scheme: ${exporter.scheme}
     honor_labels: ${exporter.honor_labels}
     scrape_interval: ${exporter.scrape_interval}
+    %{ if exporter.auth_username != "" }
+    basic_auth:
+      username: ${exporter.auth_username}
+      password: ${exporter.auth_password}
+    %{ endif }
     static_configs:
       - targets: [${exporter.endpoint}]
     metric_relabel_configs:
+    %{ if exporter.name_prefix != "" }
+      - action: replace
+        source_labels: [__name__]
+        target_label: __name__
+        regex: (.*)
+        replacement: ${exporter.name_prefix}_$${1}
+    %{ endif }
       - regex: guid
         action: labeldrop
       - source_labels: [space]

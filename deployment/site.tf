@@ -42,6 +42,8 @@ module "prometheus" {
 
   internal_apps = merge(local.internal_apps, local.cross_space_apps)
 
+  external_exporters = local.external_apps
+
   prometheus_disk_quota          = 4096
   prometheus_memory              = 4096
   prometheus_basic_auth_password = data.pass_password.basic_auth_password.password
