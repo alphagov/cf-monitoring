@@ -29,6 +29,7 @@ The [prometheus_all module](#prometheus-all) is a good starting point as it incl
 - [Internal applications](#internal-applications)
 - [alertmanager](#alertmanager)
 - [Dockerhub pull rate limit](#dockerhub-pull-rate-limit)
+- [Terraform deployment](#terraform-deployment)
 
 ## Prerequisites
 
@@ -134,14 +135,6 @@ Basic metrics are available in the `CF databases` dashboard. The `PostgreSQL adv
 
 See [postgres_prometheus_exporter README](postgres_prometheus_exporter/README.md)
 
-## Redis Services
-If your application uses Redis you may want to include a Redis metrics exporter for each instance of Redis you use. This is accomplished by passing in an array of strings. Each string takes the form
-of `"space/service"`, for example:
-
-```
-redis_services = [ "get_into_teaching/redis_service_one" , "get_into_teaching/redis_service_two" , ... ]
-```
-
 ## External exporters
 List of external endpoints which can be queried via `/metrics`. Can be used for apps deployed to Cloud foundry or any external services.
 
@@ -164,23 +157,6 @@ If the port is not specified, the default Cloud Foundry port will be used (8080)
 To allow useful aggregation and optimise time series storage, the applications should decorate the metrics with a label called `app_instance`
 representing the id of the Cloud Foundry app instance. It can be obtained at runtime from the `CF_INSTANCE_INDEX` environment variable.
 
-### Yabeda
-For ruby applications, the [yabeda](https://github.com/yabeda-rb/yabeda) is a powerful framework to expose custom metrics and provides a lot of metrics out of the box such as [yabeda-rails](https://github.com/yabeda-rb/yabeda-rails) and [yabeda-sidekiq](https://github.com/yabeda-rb/yabeda-sidekiq).
-
-It is recommended to decorate the yabeda metrics as such:
-
-```ruby
-if ENV.key?('VCAP_APPLICATION')
-  vcap_config = JSON.parse(ENV['VCAP_APPLICATION'])
-
-  Yabeda.configure do
-    default_tag :app, vcap_config['name']
-    default_tag :app_instance, ENV['CF_INSTANCE_INDEX']
-    default_tag :organisation, vcap_config['organization_name']
-    default_tag :space, vcap_config['space_name']
-  end
-end
-```
 ## alertmanager
 A default configuration is provided but it doesn't send any notification. You can configure slack to publish to a webhook or provide your own configuration.
 
@@ -197,3 +173,27 @@ docker_credentials = {
   username = var.dockerhub_username
   password = var.dockerhub_password
 }
+```
+
+## Terraform Deployment
+
+The deployment of the `prometheus_all` module is managed in the [deployment](deployment) directory. This includes all internal and external metric target configuration.
+
+### Applying Terraform
+
+Terraform is applied to the `monitoring` space of the GOV.UK Notify Org - you must have `space-developer` access to this space. 
+
+The Terraform state stored in S3 in the `notify-tools` AWS account - you must have access to this account and write access to the state bucket.
+
+From the `/deployment` dir:
+
+```
+terraform init
+gds aws notify-tools-admin -- terraform apply
+```
+
+You will be prompted to enter your GOV.UK PaaS authentication credentials or and SSO passcode if SSO is enabled.
+
+Obtain an SSO passcode by signing into GOV.UK PaaS and navigating to: [login.cloud.service.gov.uk/passcode](https://login.cloud.service.gov.uk/passcode)
+
+Copy the passcode and paste into the terminal prompt to continue the Terraform run.
