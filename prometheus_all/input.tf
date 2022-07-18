@@ -93,10 +93,17 @@ variable "docker_credentials" {
     password = ""
   }
 }
+
 variable "prometheus_memory" {
   description = "Override default prometheus application allocated memory. See Prometheus module for current default value."
   default     = ""
 }
+
+variable "prometheus_readonly_memory" {
+  description = "Override readonly prometheus application allocated memory. See Prometheus module for current default value."
+  default     = ""
+}
+
 variable "prometheus_disk_quota" {
   description = "Override default prometheus application allocated disk space. See Prometheus module for current default value."
   default     = ""
