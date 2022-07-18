@@ -46,6 +46,7 @@ module "prometheus" {
 
   prometheus_disk_quota          = 4096
   prometheus_memory              = 4096
+  prometheus_readonly_memory     = 8192
   prometheus_basic_auth_password = data.pass_password.basic_auth_password.password
   prometheus_shared_token        = data.pass_password.prometheus_shared_token.password
 }

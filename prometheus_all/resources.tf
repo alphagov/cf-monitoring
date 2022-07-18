@@ -50,7 +50,7 @@ module "prometheus_readonly" {
   monitoring_instance_name     = "readonly-${var.monitoring_instance_name}"
   monitoring_space_id          = data.cloudfoundry_space.monitoring.id
   influxdb_service_instance_id = module.influxdb[0].service_instance_id
-  memory                       = var.prometheus_memory
+  memory                       = var.prometheus_readonly_memory
   disk_quota                   = var.prometheus_disk_quota
   readonly                     = true
   docker_credentials           = var.docker_credentials
