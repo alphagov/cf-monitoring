@@ -16,6 +16,7 @@ module "prometheus" {
   grafana_github_client_secret = data.pass_password.grafana_github_client_secret.password
   grafana_github_team_ids = [
     1789721, # notify
+    5102721, # notify-wiki-editors
     6754132, # emergency-alerts
   ]
 
