@@ -188,7 +188,7 @@ The Terraform state stored in S3 in the `notify-tools` AWS account - you must ha
 From the `/deployment` dir:
 
 ```
-terraform init
+gds aws notify-tools-admin -- terraform init
 gds aws notify-tools-admin -- terraform apply
 ```
 
