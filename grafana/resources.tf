@@ -12,13 +12,17 @@ resource "cloudfoundry_route" "grafana" {
   hostname = "grafana-${var.monitoring_instance_name}"
 }
 
+data "cloudfoundry_stack" "cflinuxfs4" {
+    name = "cflinuxfs4"
+}
+
 resource "cloudfoundry_app" "grafana" {
   name             = "grafana-${var.monitoring_instance_name}"
   space            = var.monitoring_space_id
   path             = data.archive_file.config.output_path
   source_code_hash = data.archive_file.config.output_base64sha256
   buildpack        = "https://github.com/SpringerPE/cf-grafana-buildpack"
-  stack            = "cflinuxfs4"
+  stack            = data.cloudfoundry_stack.cflinuxfs4.id
   routes {
     route = cloudfoundry_route.grafana.id
   }
