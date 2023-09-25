@@ -18,6 +18,7 @@ resource "cloudfoundry_app" "grafana" {
   path             = data.archive_file.config.output_path
   source_code_hash = data.archive_file.config.output_base64sha256
   buildpack        = "https://github.com/SpringerPE/cf-grafana-buildpack"
+  stack            = "cflinuxfs4"
   routes {
     route = cloudfoundry_route.grafana.id
   }
